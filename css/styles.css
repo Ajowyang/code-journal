@@ -1,10 +1,42 @@
+body {
+  background-color: #eee;
+}
+
 header {
   padding: 15px 0;
-  justify-content: center;
+  width: 100%;
+}
+
+label {
+  margin-bottom: 10px;
+}
+
+button {
+  border-radius: 5px;
 }
 
 .placeholder-img {
   width: 100%;
+  min-height: 410px;
+  min-width: 410px;
+}
+
+.entry-input {
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  min-width: 410px;
+}
+
+.notes-area {
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  min-width: 410px;
+}
+
+.save-button {
+  padding: 5px;
 }
 
 .purp-white {

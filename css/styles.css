@@ -1,0 +1,13 @@
+header {
+  padding: 15px 0;
+  justify-content: center;
+}
+
+.placeholder-img {
+  width: 100%;
+}
+
+.purp-white {
+  background-color: #4c2676;
+  color: white;
+}

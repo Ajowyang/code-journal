@@ -13,12 +13,24 @@
   flex-wrap: wrap;
 }
 
+.column-full {
+  flex-basis: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.column-half {
+  flex-basis: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
 .column-full,
 .column-half {
   width: 100%;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (width >= 768px) {
   .container {
     max-width: 900px;
   }
@@ -31,4 +43,16 @@
   .column-half {
     width: 50%;
   }
+}
+
+.justify-right {
+  justify-content: right;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.no-padding {
+  padding: 0;
 }

@@ -17,8 +17,7 @@ button {
 
 .preview-img {
   width: 100%;
-  min-height: 410px;
-  min-width: 410px;
+  height: 100%;
 }
 
 .entry-input {
@@ -26,13 +25,14 @@ button {
   border-radius: 5px;
   padding: 10px 0;
   margin-bottom: 20px;
-  min-width: 410px;
+  padding-left: 10px;
+  min-width: 230px;
 }
 
 .notes-area {
   border: 1px solid #d3d3d3;
   border-radius: 5px;
-  width: 100%;
+  min-width: 50%;
 }
 
 .save-button {

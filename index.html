@@ -29,24 +29,28 @@
           <div class="row">
             <h2>New Entry</h2>
           </div>
-          <div class="row margin-bottom">
+          <div class="row margin-bottom-15">
             <div class="column-half no-padding-left">
               <img
                 src="../images/placeholder-image-square.jpg"
                 alt=""
                 class="preview-img" />
             </div>
-            <div class="column-half">
+            <div class="column-half flex-column">
               <label for="title">Title</label>
-              <input type="text" id="title" class="entry-input" />
+              <input type="text" id="title" name="title" class="entry-input" />
 
               <label for="photo-URL">Photo URL</label>
-              <input type="text" id="photo-URL" class="entry-input" />
+              <input
+                type="text"
+                id="photo-URL"
+                name="photoURL"
+                class="entry-input" />
             </div>
           </div>
 
           <div class="">
-            <div class="column-full margin-bottom no-padding-left">
+            <div class="column-full margin-bottom-15 no-padding-left">
               <label for="notes">Notes</label>
               <textarea
                 name="notes"

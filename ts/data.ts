@@ -2,7 +2,7 @@
 interface dataModel {
   view: string;
   entries: Entry[];
-  editing?: null;
+  editing: null;
   nextEntryId: number;
 }
 

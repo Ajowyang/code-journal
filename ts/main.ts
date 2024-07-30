@@ -19,7 +19,6 @@ if (!$entryForm) throw new Error('.entryForm query failed!');
 
 $urlInput.addEventListener('input', function () {
   const inputValue: string = $urlInput.value;
-  console.log(inputValue);
   $previewImg.src = inputValue;
 });
 
@@ -33,10 +32,11 @@ interface Entry {
 $entryForm.addEventListener('submit', function (event: Event) {
   event.preventDefault();
   // prevents the page from refreshing when the form is submitted
+
   const newObj: Entry = {
-    title: $titleInput.value,
-    photoUrl: $urlInput.value,
-    notes: $notes.value,
+    title: $entryForm.title,
+    photoUrl: $entryForm.photoURL,
+    notes: $entryForm.notes,
     entryId: data.nextEntryId,
   };
   // stores the form's input values in a new object
@@ -45,7 +45,6 @@ $entryForm.addEventListener('submit', function (event: Event) {
   // increments the `nextEntryId` property of the data model so if another entry submitted later, it will receive diff `entryId`.
   data.entries.unshift(newObj);
   // adds the new object to the beginning of the data model's array of entries.
-  // console.log(newObj);
 
   writeData();
 

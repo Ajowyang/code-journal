@@ -13,14 +13,6 @@
   flex-wrap: wrap;
 }
 
-.column-full {
-  flex-basis: 100%;
-}
-
-.column-half {
-  flex-basis: 50%;
-}
-
 .flex-column {
   display: flex;
   flex-direction: column;

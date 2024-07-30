@@ -23,12 +23,25 @@ $urlInput.addEventListener('input', function () {
   $previewImg.src = inputValue;
 });
 
+interface Entry {
+  title: string;
+  photoUrl: string;
+  notes: string;
+  entryId: number;
+}
+
 $entryForm.addEventListener('submit', function (event: Event) {
   event.preventDefault();
-  const newObj = {
+  const newObj: Entry = {
     title: $titleInput.value,
     photoUrl: $urlInput.value,
     notes: $notes.value,
+    entryId: data.nextEntryId,
   };
+  data.nextEntryId++;
+  data.entries.unshift(newObj);
   console.log(newObj);
+
+  $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
+  $entryForm.reset();
 });

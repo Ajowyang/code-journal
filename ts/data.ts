@@ -1,6 +1,12 @@
 /* exported data */
+interface dataModel {
+  view: string;
+  entries: Entry[];
+  editing?: null;
+  nextEntryId: number;
+}
 
-let data = {
+const data: dataModel = {
   view: 'entry-form',
   entries: [],
   editing: null,

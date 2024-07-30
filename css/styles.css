@@ -15,7 +15,7 @@ button {
   border-radius: 5px;
 }
 
-.placeholder-img {
+.preview-img {
   width: 100%;
   min-height: 410px;
   min-width: 410px;
@@ -32,7 +32,7 @@ button {
 .notes-area {
   border: 1px solid #d3d3d3;
   border-radius: 5px;
-  min-width: 410px;
+  width: 100%;
 }
 
 .save-button {

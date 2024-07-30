@@ -1,12 +1,17 @@
 /* import global data */
+
 const $urlInput = document.querySelector('#photo-URL') as HTMLInputElement;
 if (!$urlInput) throw new Error('.photo-URL-input query failed!');
-// querying url input
+// querying photo url input
 const $previewImg = document.querySelector('.preview-img') as HTMLImageElement;
 if (!$previewImg) throw new Error('.preview-img query failed!');
 // querying preview img
 const $titleInput = document.querySelector('#title') as HTMLInputElement;
 if (!$titleInput) throw new Error('#title query failed!');
+// query title input
+const $notes = document.querySelector('#notes') as HTMLTextAreaElement;
+if (!$notes) throw new Error('#notes query failed!');
+// query notes text area
 
 const $entryForm = document.querySelector('#entry-form') as HTMLFormElement;
 if (!$entryForm) throw new Error('.entryForm query failed!');
@@ -20,4 +25,10 @@ $urlInput.addEventListener('input', function () {
 
 $entryForm.addEventListener('submit', function (event: Event) {
   event.preventDefault();
+  const newObj = {
+    title: $titleInput.value,
+    photoUrl: $urlInput.value,
+    notes: $notes.value,
+  };
+  console.log(newObj);
 });

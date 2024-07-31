@@ -29,16 +29,31 @@ interface Entry {
   entryId: number;
 }
 
+interface FormElements extends HTMLCollection {
+  title: HTMLInputElement;
+  photoUrl: HTMLInputElement;
+  notes: HTMLTextAreaElement;
+}
+
 $entryForm.addEventListener('submit', function (event: Event) {
   event.preventDefault();
   // prevents the page from refreshing when the form is submitted
+  const $formElements = $entryForm.elements as FormElements;
+
+  // const newObj: Entry = {
+  //   title: $titleInput.value,
+  //   photoUrl: $urlInput.value,
+  //   notes: $notes.value,
+  //   entryId: data.nextEntryId,
+  // };
 
   const newObj: Entry = {
-    title: $entryForm.title,
-    photoUrl: $entryForm.photoURL,
-    notes: $entryForm.notes,
+    title: $formElements.title.value,
+    photoUrl: $formElements.photoUrl.value,
+    notes: $formElements.notes.value,
     entryId: data.nextEntryId,
   };
+
   // stores the form's input values in a new object
   // assigns an `entryId` property to the new object, taken from the `nextEntryId` property of the data model.
   data.nextEntryId++;

@@ -22,10 +22,17 @@ $urlInput.addEventListener('input', function () {
 $entryForm.addEventListener('submit', function (event) {
   event.preventDefault();
   // prevents the page from refreshing when the form is submitted
+  const $formElements = $entryForm.elements;
+  // const newObj: Entry = {
+  //   title: $titleInput.value,
+  //   photoUrl: $urlInput.value,
+  //   notes: $notes.value,
+  //   entryId: data.nextEntryId,
+  // };
   const newObj = {
-    title: $entryForm.title,
-    photoUrl: $entryForm.photoURL,
-    notes: $entryForm.notes,
+    title: $formElements.title.value,
+    photoUrl: $formElements.photoURL.value,
+    notes: $formElements.notes.value,
     entryId: data.nextEntryId,
   };
   // stores the form's input values in a new object

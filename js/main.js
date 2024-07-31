@@ -30,8 +30,8 @@ $entryForm.addEventListener('submit', function (event) {
   //   entryId: data.nextEntryId,
   // };
   const newObj = {
+    photoURL: $formElements.photoURL.value,
     title: $formElements.title.value,
-    photoUrl: $formElements.photoURL.value,
     notes: $formElements.notes.value,
     entryId: data.nextEntryId,
   };
@@ -46,4 +46,46 @@ $entryForm.addEventListener('submit', function (event) {
   // resets the preview image's `src` attribute back to the placeholder image.
   $entryForm.reset();
   // resets form
+});
+function renderEntry(entry) {
+  // <li>
+  //   <div class="row">
+  //     <div class="column-half">
+  //       <img class="list-img" src="${entry.photoUrl}">
+  //     </div>
+  //     <div class="column-half">
+  //       <h3>${entry.title}</h3>
+  //       <p>${entry.notes}</p>
+  //     </div>
+  //   </div>
+  // </li>
+  const $entryLi = document.createElement('li');
+  const $rowDiv = document.createElement('div');
+  $rowDiv.setAttribute('class', 'row');
+  const $colHalfDiv1 = document.createElement('div');
+  $colHalfDiv1.setAttribute('class', 'column-half');
+  const $entryImg = document.createElement('img');
+  $entryImg.setAttribute('class', 'list-img');
+  $entryImg.setAttribute('src', entry.photoURL);
+  const $colHalfDiv2 = document.createElement('div');
+  $colHalfDiv2.setAttribute('class', 'column-half');
+  const $entryTitle = document.createElement('h3');
+  $entryTitle.textContent = entry.title;
+  const $entryNotes = document.createElement('p');
+  $entryNotes.textContent = entry.notes;
+  $colHalfDiv1.appendChild($entryImg);
+  $colHalfDiv2.appendChild($entryTitle);
+  $colHalfDiv2.appendChild($entryNotes);
+  $rowDiv.appendChild($colHalfDiv1);
+  $rowDiv.appendChild($colHalfDiv2);
+  $entryLi.appendChild($rowDiv);
+  return $entryLi;
+}
+const $entriesList = document.querySelector('.entries-list');
+if (!$entriesList) throw new Error('.entries-list query failed!');
+document.addEventListener('DOMContentLoaded', function () {
+  for (let i = 0; i < data.entries.length; i++) {
+    let entry = renderEntry(data.entries[i]);
+    $entriesList.append(entry);
+  }
 });

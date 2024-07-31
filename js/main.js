@@ -42,6 +42,15 @@ $entryForm.addEventListener('submit', function (event) {
   data.entries.unshift(newObj);
   // adds the new object to the beginning of the data model's array of entries.
   writeData();
+  let renderedEntry = renderEntry(newObj);
+  $entriesList.prepend(renderedEntry);
+  viewSwap('entries');
+  if (
+    data.entries.length > 0 &&
+    !$noEntriesMessage.classList.contains('hidden')
+  ) {
+    $noEntriesMessage.classList.add('hidden');
+  }
   $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
   // resets the preview image's `src` attribute back to the placeholder image.
   $entryForm.reset();
@@ -84,8 +93,63 @@ function renderEntry(entry) {
 const $entriesList = document.querySelector('.entries-list');
 if (!$entriesList) throw new Error('.entries-list query failed!');
 document.addEventListener('DOMContentLoaded', function () {
-  for (let i = 0; i < data.entries.length; i++) {
-    let entry = renderEntry(data.entries[i]);
-    $entriesList.append(entry);
+  if (data.view === 'entries') {
+    viewSwap('entries');
+  } else if (data.view === 'entry-form') {
+    viewSwap('entry-form');
   }
+  for (let i = 0; i < data.entries.length; i++) {
+    const entry = renderEntry(data.entries[i]);
+    $entriesList.prepend(entry);
+  }
+  if (
+    data.entries.length === 0 &&
+    $noEntriesMessage.classList.contains('hidden')
+  ) {
+    toggleNoEntries();
+  } else if (
+    data.entries.length > 0 &&
+    !$noEntriesMessage.classList.contains('hidden')
+  ) {
+    toggleNoEntries();
+  }
+});
+const $noEntriesMessage = document.querySelector('.no-entries-message');
+if (!$noEntriesMessage) throw new Error('.no-entries-message query failed!');
+function toggleNoEntries() {
+  if ($noEntriesMessage.classList.contains('hidden')) {
+    $noEntriesMessage.classList.remove('hidden');
+  } else {
+    $noEntriesMessage.classList.add('hidden');
+  }
+}
+const $entryFormView = document.querySelector('.entry-form-view');
+if (!$entryFormView) throw new Error('.entry-form-view query failed!');
+const $entriesView = document.querySelector('.entries-view');
+if (!$entriesView) throw new Error('entries-view query failed!');
+function viewSwap(viewName) {
+  if (viewName === 'entries') {
+    $entryFormView.classList.add('hidden');
+    $entriesView.classList.remove('hidden');
+    data.view = 'entries';
+  }
+  if (viewName === 'entry-form') {
+    $entriesView.classList.add('hidden');
+    $entryFormView.classList.remove('hidden');
+    data.view = 'entry-form';
+  }
+}
+const $viewSwapAnchor = document.querySelector('.view-swap-anchor');
+if (!$viewSwapAnchor) throw new Error('.view-swap-anchor query failed!');
+$viewSwapAnchor.addEventListener('click', function (event) {
+  event.preventDefault();
+  viewSwap('entries');
+  writeData();
+});
+const $newEntryAnchor = document.querySelector('.new-entry-anchor');
+if (!$newEntryAnchor) throw new Error('.new-entry-anchor query failed!');
+$newEntryAnchor.addEventListener('click', function (event) {
+  event.preventDefault();
+  viewSwap('entry-form');
+  writeData();
 });

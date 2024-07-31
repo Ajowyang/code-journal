@@ -36,7 +36,7 @@ button {
 }
 
 .save-button {
-  padding: 5px;
+  padding: 5px 10px;
 }
 
 input:focus {
@@ -58,4 +58,19 @@ textarea:focus {
 
 .list-img {
   width: 100%;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+
+.NEW-button {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 2px solid black;
+  border-style: outset;
+  font-family: Arial, Helvetica, sans-serif;
+  font-stretch: 100%;
+  font-style: normal;
 }

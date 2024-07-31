@@ -42,7 +42,7 @@ $entryForm.addEventListener('submit', function (event) {
   data.entries.unshift(newObj);
   // adds the new object to the beginning of the data model's array of entries.
   writeData();
-  let renderedEntry = renderEntry(newObj);
+  const renderedEntry = renderEntry(newObj);
   $entriesList.prepend(renderedEntry);
   viewSwap('entries');
   if (
@@ -144,6 +144,12 @@ if (!$viewSwapAnchor) throw new Error('.view-swap-anchor query failed!');
 $viewSwapAnchor.addEventListener('click', function (event) {
   event.preventDefault();
   viewSwap('entries');
+  if (
+    data.entries.length === 0 &&
+    $noEntriesMessage.classList.contains('hidden')
+  ) {
+    $noEntriesMessage.classList.remove('hidden');
+  }
   writeData();
 });
 const $newEntryAnchor = document.querySelector('.new-entry-anchor');

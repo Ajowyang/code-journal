@@ -189,6 +189,12 @@ if (!$viewSwapAnchor) throw new Error('.view-swap-anchor query failed!');
 $viewSwapAnchor.addEventListener('click', function (event: Event): void {
   event.preventDefault();
   viewSwap('entries');
+  if (
+    data.entries.length === 0 &&
+    $noEntriesMessage.classList.contains('hidden')
+  ) {
+    $noEntriesMessage.classList.remove('hidden');
+  }
   writeData();
 });
 

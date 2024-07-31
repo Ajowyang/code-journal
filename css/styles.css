@@ -51,3 +51,11 @@ textarea:focus {
   background-color: #4c2676;
   color: white;
 }
+
+.entries-list {
+  list-style-type: none;
+}
+
+.list-img {
+  width: 100%;
+}

@@ -1,0 +1,53 @@
+body {
+  background-color: #eee;
+}
+
+header {
+  padding: 15px 0;
+  width: 100%;
+}
+
+label {
+  margin-bottom: 10px;
+}
+
+button {
+  border-radius: 5px;
+}
+
+.preview-img {
+  width: 100%;
+}
+
+.entry-input {
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  padding: 10px 0;
+  margin-bottom: 20px;
+  padding-left: 10px;
+  min-width: 230px;
+}
+
+.notes-area {
+  border: 1px solid #d3d3d3;
+  border-radius: 5px;
+  width: 100%;
+  padding: 10px;
+}
+
+.save-button {
+  padding: 5px;
+}
+
+input:focus {
+  outline-color: #4c2676;
+}
+
+textarea:focus {
+  outline-color: #4c2676;
+}
+
+.purp-white {
+  background-color: #4c2676;
+  color: white;
+}

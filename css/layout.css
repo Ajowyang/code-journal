@@ -13,12 +13,57 @@
   flex-wrap: wrap;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .column-full,
 .column-half {
   width: 100%;
 }
 
-@media screen and (min-width: 768px) {
+.justify-right {
+  justify-content: right;
+}
+
+.justify-left {
+  justify-content: left;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-left {
+  align-items: left;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.no-padding-left {
+  padding-left: 0;
+}
+
+.no-padding-right {
+  padding-right: 0;
+}
+
+.margin-bottom-15 {
+  margin-bottom: 15px;
+}
+
+@media screen and (width >= 768px) {
   .container {
     max-width: 900px;
   }

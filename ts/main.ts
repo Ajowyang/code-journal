@@ -209,6 +209,11 @@ if (!$newEntryAnchor) throw new Error('.new-entry-anchor query failed!');
 $newEntryAnchor.addEventListener('click', function () {
   viewSwap('entry-form');
   $entryFormTitle.textContent = 'New Entry';
+  $urlInput.value = '';
+  $titleInput.value = '';
+  $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
+  $notes.value = '';
+  data.editing = null;
   writeData();
 });
 

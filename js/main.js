@@ -47,13 +47,13 @@ $entryForm.addEventListener('submit', function (event) {
     // resets form
   } else {
     newObj.entryId = data.editing.entryId;
-    //Assign the entry id value from `data.editing` to the new object with the updated form values.
+    // Assign the entry id value from `data.editing` to the new object with the updated form values.
     for (let i = 0; i < data.entries.length; i++) {
       if (data.editing.entryId === data.entries[i].entryId) {
         data.entries[i] = newObj;
       }
     }
-    //Replace the original object in the `data.entries` array for the edited entry with the new object with the edited data.
+    // Replace the original object in the `data.entries` array for the edited entry with the new object with the edited data.
     let $listItemToReplace = document.querySelector(
       `li[data-entry-id="${data.editing.entryId}"]`,
     );
@@ -164,6 +164,11 @@ if (!$newEntryAnchor) throw new Error('.new-entry-anchor query failed!');
 $newEntryAnchor.addEventListener('click', function () {
   viewSwap('entry-form');
   $entryFormTitle.textContent = 'New Entry';
+  $urlInput.value = '';
+  $titleInput.value = '';
+  $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
+  $notes.value = '';
+  data.editing = null;
   writeData();
 });
 const $entryFormTitle = document.querySelector('.entry-form-title');

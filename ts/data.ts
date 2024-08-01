@@ -16,7 +16,8 @@ function writeData(): void {
 function readData(): dataModel {
   const dataJsonString = localStorage.getItem('data') as string;
   if (!dataJsonString) {
-    return { view: '', entries: [], editing: null, nextEntryId: 1 };
+    console.log('no existing data ');
+    return { view: 'entry-form', entries: [], editing: null, nextEntryId: 1 };
   }
   return JSON.parse(dataJsonString);
 }

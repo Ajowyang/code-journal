@@ -65,6 +65,7 @@ $entryForm.addEventListener('submit', function (event: Event) {
 
   const renderedEntry = renderEntry(newObj);
   $entriesList.prepend(renderedEntry);
+
   viewSwap('entries');
   if (
     data.entries.length > 0 &&
@@ -161,15 +162,16 @@ const $entriesView = document.querySelector('.entries-view') as HTMLDivElement;
 if (!$entriesView) throw new Error('entries-view query failed!');
 
 function viewSwap(viewName: string): void {
-  viewName = data.view;
   if (viewName === 'entries') {
     $entryFormView.classList.add('hidden');
     $entriesView.classList.remove('hidden');
     data.view = 'entries';
+    writeData();
   } else if (viewName === 'entry-form') {
     $entriesView.classList.add('hidden');
     $entryFormView.classList.remove('hidden');
     data.view = 'entry-form';
+    writeData();
   }
 }
 
@@ -177,8 +179,7 @@ const $viewSwapAnchor = document.querySelector(
   '.view-swap-anchor',
 ) as HTMLAnchorElement;
 if (!$viewSwapAnchor) throw new Error('.view-swap-anchor query failed!');
-$viewSwapAnchor.addEventListener('click', function (event: Event): void {
-  event.preventDefault();
+$viewSwapAnchor.addEventListener('click', function (): void {
   viewSwap('entries');
 
   toggleNoEntries();

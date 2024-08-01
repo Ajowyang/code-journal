@@ -118,21 +118,21 @@ if (!$entryFormView) throw new Error('.entry-form-view query failed!');
 const $entriesView = document.querySelector('.entries-view');
 if (!$entriesView) throw new Error('entries-view query failed!');
 function viewSwap(viewName) {
-  viewName = data.view;
   if (viewName === 'entries') {
     $entryFormView.classList.add('hidden');
     $entriesView.classList.remove('hidden');
     data.view = 'entries';
+    writeData();
   } else if (viewName === 'entry-form') {
     $entriesView.classList.add('hidden');
     $entryFormView.classList.remove('hidden');
     data.view = 'entry-form';
+    writeData();
   }
 }
 const $viewSwapAnchor = document.querySelector('.view-swap-anchor');
 if (!$viewSwapAnchor) throw new Error('.view-swap-anchor query failed!');
-$viewSwapAnchor.addEventListener('click', function (event) {
-  event.preventDefault();
+$viewSwapAnchor.addEventListener('click', function () {
   viewSwap('entries');
   toggleNoEntries();
   writeData();

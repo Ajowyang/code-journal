@@ -29,21 +29,47 @@ $entryForm.addEventListener('submit', function (event) {
     notes: $formElements.notes.value,
     entryId: data.nextEntryId,
   };
-  // stores the form's input values in a new object
-  // assigns an `entryId` property to the new object, taken from the `nextEntryId` property of the data model.
-  data.nextEntryId++;
-  // increments the `nextEntryId` property of the data model so if another entry submitted later, it will receive diff `entryId`.
-  data.entries.unshift(newObj);
-  // adds the new object to the beginning of the data model's array of entries.
-  writeData();
-  const renderedEntry = renderEntry(newObj);
-  $entriesList.prepend(renderedEntry);
-  viewSwap('entries');
-  toggleNoEntries();
-  $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
-  // resets the preview image's `src` attribute back to the placeholder image.
-  $entryForm.reset();
-  // resets form
+  if (data.editing === null) {
+    // stores the form's input values in a new object
+    // assigns an `entryId` property to the new object, taken from the `nextEntryId` property of the data model.
+    data.nextEntryId++;
+    // increments the `nextEntryId` property of the data model so if another entry submitted later, it will receive diff `entryId`.
+    data.entries.unshift(newObj);
+    // adds the new object to the beginning of the data model's array of entries.
+    writeData();
+    const renderedEntry = renderEntry(newObj);
+    $entriesList.prepend(renderedEntry);
+    viewSwap('entries');
+    toggleNoEntries();
+    $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
+    // resets the preview image's `src` attribute back to the placeholder image.
+    $entryForm.reset();
+    // resets form
+  } else {
+    newObj.entryId = data.editing.entryId;
+    //Assign the entry id value from `data.editing` to the new object with the updated form values.
+    for (let i = 0; i < data.entries.length; i++) {
+      if (data.editing.entryId === data.entries[i].entryId) {
+        data.entries[i] = newObj;
+      }
+    }
+    //Replace the original object in the `data.entries` array for the edited entry with the new object with the edited data.
+    let $listItemToReplace = document.querySelector(
+      `li[data-entry-id="${data.editing.entryId}"]`,
+    );
+    if (!$listItemToReplace)
+      throw new Error(
+        `<li[data-entry-id=${data.editing.entryId}] query failed!`,
+      );
+    const renderedEntry = renderEntry(newObj);
+    $listItemToReplace = renderedEntry;
+    viewSwap('entries');
+    $entryFormTitle.textContent = 'New Entry';
+    data.editing = null;
+    writeData();
+    $entryForm.reset();
+    // resets form
+  }
 });
 function renderEntry(entry) {
   // <li>
@@ -52,12 +78,16 @@ function renderEntry(entry) {
   //       <img class="list-img" src="${entry.photoUrl}">
   //     </div>
   //     <div class="column-half">
-  //       <h3>${entry.title}</h3>
+  //       <div class="row justify-space-between align-center">
+  //        <h3>${entry.title}</h3>
+  //        <i class="fa-solid fa-pencil"></i
+  //       </div>
   //       <p>${entry.notes}</p>
   //     </div>
   //   </div>
   // </li>
   const $entryLi = document.createElement('li');
+  $entryLi.setAttribute('data-entry-id', entry.entryId.toString());
   const $rowDiv = document.createElement('div');
   $rowDiv.setAttribute('class', 'row');
   const $colHalfDiv1 = document.createElement('div');
@@ -67,12 +97,18 @@ function renderEntry(entry) {
   $entryImg.setAttribute('src', entry.photoURL);
   const $colHalfDiv2 = document.createElement('div');
   $colHalfDiv2.setAttribute('class', 'column-half');
+  const $titleRow = document.createElement('div');
+  $titleRow.classList.add('row', 'justify-space-between', 'align-center');
   const $entryTitle = document.createElement('h3');
   $entryTitle.textContent = entry.title;
+  const $pencil = document.createElement('i');
+  $pencil.classList.add('fa-solid', 'fa-pencil');
   const $entryNotes = document.createElement('p');
   $entryNotes.textContent = entry.notes;
   $colHalfDiv1.appendChild($entryImg);
-  $colHalfDiv2.appendChild($entryTitle);
+  $titleRow.appendChild($entryTitle);
+  $titleRow.appendChild($pencil);
+  $colHalfDiv2.appendChild($titleRow);
   $colHalfDiv2.appendChild($entryNotes);
   $rowDiv.appendChild($colHalfDiv1);
   $rowDiv.appendChild($colHalfDiv2);
@@ -127,5 +163,35 @@ const $newEntryAnchor = document.querySelector('.new-entry-anchor');
 if (!$newEntryAnchor) throw new Error('.new-entry-anchor query failed!');
 $newEntryAnchor.addEventListener('click', function () {
   viewSwap('entry-form');
+  $entryFormTitle.textContent = 'New Entry';
   writeData();
+});
+const $entryFormTitle = document.querySelector('.entry-form-title');
+if (!$entryFormTitle) throw new Error('.entry-form-title query failed!');
+$entriesList.addEventListener('click', function (event) {
+  const eventTarget = event.target;
+  console.log('eventTarget:', eventTarget);
+  console.log('eventTarget.tagName:', eventTarget.tagName);
+  if (eventTarget.tagName === 'I') {
+    viewSwap('entry-form');
+    const closestListItem = eventTarget.closest('li');
+    console.log(closestListItem);
+    console.log(closestListItem.getAttribute('data-entry-id'));
+    for (let i = 0; i < data.entries.length; i++) {
+      if (
+        data.entries[i].entryId.toString() ===
+        closestListItem.getAttribute('data-entry-id')
+      ) {
+        data.editing = data.entries[i];
+      }
+    }
+    console.log(data.editing);
+    if (data.editing) {
+      $entryFormTitle.textContent = 'Edit Entry';
+      $titleInput.value = data.editing.title;
+      $previewImg.setAttribute('src', data.editing.photoURL);
+      $urlInput.value = data.editing.photoURL;
+      $notes.value = data.editing.notes;
+    }
+  }
 });

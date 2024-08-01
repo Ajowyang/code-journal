@@ -23,15 +23,9 @@ $entryForm.addEventListener('submit', function (event) {
   event.preventDefault();
   // prevents the page from refreshing when the form is submitted
   const $formElements = $entryForm.elements;
-  // const newObj: Entry = {
-  //   title: $titleInput.value,
-  //   photoUrl: $urlInput.value,
-  //   notes: $notes.value,
-  //   entryId: data.nextEntryId,
-  // };
   const newObj = {
+    photoURL: $formElements.photoURL.value,
     title: $formElements.title.value,
-    photoUrl: $formElements.photoURL.value,
     notes: $formElements.notes.value,
     entryId: data.nextEntryId,
   };
@@ -42,8 +36,96 @@ $entryForm.addEventListener('submit', function (event) {
   data.entries.unshift(newObj);
   // adds the new object to the beginning of the data model's array of entries.
   writeData();
+  const renderedEntry = renderEntry(newObj);
+  $entriesList.prepend(renderedEntry);
+  viewSwap('entries');
+  toggleNoEntries();
   $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
   // resets the preview image's `src` attribute back to the placeholder image.
   $entryForm.reset();
   // resets form
+});
+function renderEntry(entry) {
+  // <li>
+  //   <div class="row">
+  //     <div class="column-half">
+  //       <img class="list-img" src="${entry.photoUrl}">
+  //     </div>
+  //     <div class="column-half">
+  //       <h3>${entry.title}</h3>
+  //       <p>${entry.notes}</p>
+  //     </div>
+  //   </div>
+  // </li>
+  const $entryLi = document.createElement('li');
+  const $rowDiv = document.createElement('div');
+  $rowDiv.setAttribute('class', 'row');
+  const $colHalfDiv1 = document.createElement('div');
+  $colHalfDiv1.setAttribute('class', 'column-half');
+  const $entryImg = document.createElement('img');
+  $entryImg.setAttribute('class', 'list-img');
+  $entryImg.setAttribute('src', entry.photoURL);
+  const $colHalfDiv2 = document.createElement('div');
+  $colHalfDiv2.setAttribute('class', 'column-half');
+  const $entryTitle = document.createElement('h3');
+  $entryTitle.textContent = entry.title;
+  const $entryNotes = document.createElement('p');
+  $entryNotes.textContent = entry.notes;
+  $colHalfDiv1.appendChild($entryImg);
+  $colHalfDiv2.appendChild($entryTitle);
+  $colHalfDiv2.appendChild($entryNotes);
+  $rowDiv.appendChild($colHalfDiv1);
+  $rowDiv.appendChild($colHalfDiv2);
+  $entryLi.appendChild($rowDiv);
+  return $entryLi;
+}
+const $entriesList = document.querySelector('.entries-list');
+if (!$entriesList) throw new Error('.entries-list query failed!');
+document.addEventListener('DOMContentLoaded', function () {
+  if (data.view === 'entries') {
+    viewSwap('entries');
+  } else if (data.view === 'entry-form') {
+    viewSwap('entry-form');
+  }
+  for (let i = 0; i < data.entries.length; i++) {
+    const entry = renderEntry(data.entries[i]);
+    $entriesList.append(entry);
+  }
+  toggleNoEntries();
+});
+const $noEntriesMessage = document.querySelector('.no-entries-message');
+if (!$noEntriesMessage) throw new Error('.no-entries-message query failed!');
+function toggleNoEntries() {
+  if (data.entries.length > 0) {
+    $noEntriesMessage.classList.add('hidden');
+  } else {
+    $noEntriesMessage.classList.remove('hidden');
+  }
+}
+const $entryFormView = document.querySelector('.entry-form-view');
+if (!$entryFormView) throw new Error('.entry-form-view query failed!');
+const $entriesView = document.querySelector('.entries-view');
+if (!$entriesView) throw new Error('entries-view query failed!');
+function viewSwap(viewName) {
+  data.view = viewName;
+  if (viewName === 'entries') {
+    $entryFormView.classList.add('hidden');
+    $entriesView.classList.remove('hidden');
+  } else if (viewName === 'entry-form') {
+    $entriesView.classList.add('hidden');
+    $entryFormView.classList.remove('hidden');
+  }
+}
+const $viewSwapAnchor = document.querySelector('.view-swap-anchor');
+if (!$viewSwapAnchor) throw new Error('.view-swap-anchor query failed!');
+$viewSwapAnchor.addEventListener('click', function () {
+  viewSwap('entries');
+  toggleNoEntries();
+  writeData();
+});
+const $newEntryAnchor = document.querySelector('.new-entry-anchor');
+if (!$newEntryAnchor) throw new Error('.new-entry-anchor query failed!');
+$newEntryAnchor.addEventListener('click', function () {
+  viewSwap('entry-form');
+  writeData();
 });

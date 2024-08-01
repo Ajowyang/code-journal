@@ -118,16 +118,15 @@ if (!$entryFormView) throw new Error('.entry-form-view query failed!');
 const $entriesView = document.querySelector('.entries-view');
 if (!$entriesView) throw new Error('entries-view query failed!');
 function viewSwap(viewName) {
-  if (viewName === 'entries') {
-    $entryFormView.classList.add('hidden');
-    $entriesView.classList.remove('hidden');
-    data.view = 'entries';
-    writeData();
-  } else if (viewName === 'entry-form') {
-    $entriesView.classList.add('hidden');
-    $entryFormView.classList.remove('hidden');
-    data.view = 'entry-form';
-    writeData();
+  if (viewName === 'entries' || viewName === 'entry-form') {
+    data.view = viewName;
+    if (viewName === 'entries') {
+      $entryFormView.classList.add('hidden');
+      $entriesView.classList.remove('hidden');
+    } else if (viewName === 'entry-form') {
+      $entriesView.classList.add('hidden');
+      $entryFormView.classList.remove('hidden');
+    }
   }
 }
 const $viewSwapAnchor = document.querySelector('.view-swap-anchor');

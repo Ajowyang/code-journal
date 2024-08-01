@@ -79,6 +79,7 @@ $entryForm.addEventListener('submit', function (event: Event) {
 
     $entryFormTitle.textContent = 'New Entry';
     data.editing = null;
+    $deleteButton.classList.add('visibility-hidden');
   }
   writeData();
   viewSwap('entries');
@@ -204,6 +205,7 @@ $viewSwapAnchor.addEventListener('click', function (): void {
 const $newEntryAnchor = document.querySelector('.new-entry-anchor');
 if (!$newEntryAnchor) throw new Error('.new-entry-anchor query failed!');
 $newEntryAnchor.addEventListener('click', function () {
+  $deleteButton.classList.add('visibility-hidden');
   viewSwap('entry-form');
   $entryFormTitle.textContent = 'New Entry';
   $urlInput.value = '';
@@ -225,6 +227,7 @@ $entriesList.addEventListener('click', function (event: Event) {
     return;
   }
   viewSwap('entry-form');
+  $deleteButton.classList.remove('visibility-hidden');
   const closestListItem = eventTarget.closest('li') as HTMLElement;
   for (let i = 0; i < data.entries.length; i++) {
     if (
@@ -243,3 +246,8 @@ $entriesList.addEventListener('click', function (event: Event) {
     $notes.value = data.editing.notes;
   }
 });
+
+const $deleteButton = document.querySelector(
+  '.delete-button',
+) as HTMLButtonElement;
+if (!$deleteButton) throw new Error('.delete-button query failed!');

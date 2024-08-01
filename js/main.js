@@ -50,7 +50,7 @@ $entryForm.addEventListener('submit', function (event) {
       }
     }
     // Replace the original object in the `data.entries` array for the edited entry with the new object with the edited data.
-    let $listItemToReplace = document.querySelector(
+    const $listItemToReplace = document.querySelector(
       `li[data-entry-id="${data.editing.entryId}"]`,
     );
     if (!$listItemToReplace)
@@ -61,6 +61,7 @@ $entryForm.addEventListener('submit', function (event) {
     $listItemToReplace.replaceWith(renderedEntry);
     $entryFormTitle.textContent = 'New Entry';
     data.editing = null;
+    $deleteButton.classList.add('visibility-hidden');
   }
   writeData();
   viewSwap('entries');
@@ -157,6 +158,7 @@ $viewSwapAnchor.addEventListener('click', function () {
 const $newEntryAnchor = document.querySelector('.new-entry-anchor');
 if (!$newEntryAnchor) throw new Error('.new-entry-anchor query failed!');
 $newEntryAnchor.addEventListener('click', function () {
+  $deleteButton.classList.add('visibility-hidden');
   viewSwap('entry-form');
   $entryFormTitle.textContent = 'New Entry';
   $urlInput.value = '';
@@ -174,6 +176,7 @@ $entriesList.addEventListener('click', function (event) {
     return;
   }
   viewSwap('entry-form');
+  $deleteButton.classList.remove('visibility-hidden');
   const closestListItem = eventTarget.closest('li');
   for (let i = 0; i < data.entries.length; i++) {
     if (
@@ -191,3 +194,5 @@ $entriesList.addEventListener('click', function (event) {
     $notes.value = data.editing.notes;
   }
 });
+const $deleteButton = document.querySelector('.delete-button');
+if (!$deleteButton) throw new Error('.delete-button query failed!');

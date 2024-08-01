@@ -74,3 +74,10 @@ a {
   font-stretch: 100%;
   font-style: normal;
 }
+
+.delete-button {
+  color: #f81614;
+  border: none;
+  text-decoration: underline;
+  font-weight: bold;
+}

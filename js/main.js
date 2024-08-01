@@ -23,15 +23,15 @@ $entryForm.addEventListener('submit', function (event) {
   event.preventDefault();
   // prevents the page from refreshing when the form is submitted
   const $formElements = $entryForm.elements;
-  const newObj = {
+  let newObj = {
     photoURL: $formElements.photoURL.value,
     title: $formElements.title.value,
     notes: $formElements.notes.value,
     entryId: data.nextEntryId,
   };
+  // stores the form's input values in a new object
+  // assigns an `entryId` property to the new object, taken from the `nextEntryId` property of the data model.
   if (data.editing === null) {
-    // stores the form's input values in a new object
-    // assigns an `entryId` property to the new object, taken from the `nextEntryId` property of the data model.
     data.nextEntryId++;
     // increments the `nextEntryId` property of the data model so if another entry submitted later, it will receive diff `entryId`.
     data.entries.unshift(newObj);
@@ -62,7 +62,7 @@ $entryForm.addEventListener('submit', function (event) {
         `<li[data-entry-id=${data.editing.entryId}] query failed!`,
       );
     const renderedEntry = renderEntry(newObj);
-    $listItemToReplace = renderedEntry;
+    $listItemToReplace.replaceWith(renderedEntry);
     viewSwap('entries');
     $entryFormTitle.textContent = 'New Entry';
     data.editing = null;

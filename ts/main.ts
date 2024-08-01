@@ -45,9 +45,9 @@ $entryForm.addEventListener('submit', function (event: Event) {
     notes: $formElements.notes.value,
     entryId: data.nextEntryId,
   };
+  // stores the form's input values in a new object
+  // assigns an `entryId` property to the new object, taken from the `nextEntryId` property of the data model.
   if (data.editing === null) {
-    // stores the form's input values in a new object
-    // assigns an `entryId` property to the new object, taken from the `nextEntryId` property of the data model.
     data.nextEntryId++;
     // increments the `nextEntryId` property of the data model so if another entry submitted later, it will receive diff `entryId`.
     data.entries.unshift(newObj);
@@ -69,17 +69,19 @@ $entryForm.addEventListener('submit', function (event: Event) {
         data.entries[i] = newObj;
       }
     }
-
     // Replace the original object in the `data.entries` array for the edited entry with the new object with the edited data.
-    let $listItemToReplace = document.querySelector(
+
+    const $listItemToReplace = document.querySelector(
       `li[data-entry-id="${data.editing.entryId}"]`,
     );
     if (!$listItemToReplace)
       throw new Error(
         `<li[data-entry-id=${data.editing.entryId}] query failed!`,
       );
+
     const renderedEntry = renderEntry(newObj);
-    $listItemToReplace = renderedEntry;
+    $listItemToReplace.replaceWith(renderedEntry);
+
     viewSwap('entries');
     $entryFormTitle.textContent = 'New Entry';
     data.editing = null;
@@ -123,6 +125,7 @@ function renderEntry(entry: Entry): HTMLElement {
   $titleRow.classList.add('row', 'justify-space-between', 'align-center');
   const $entryTitle = document.createElement('h3');
   $entryTitle.textContent = entry.title;
+
   const $pencil = document.createElement('i');
   $pencil.classList.add('fa-solid', 'fa-pencil');
   const $entryNotes = document.createElement('p');

@@ -52,15 +52,11 @@ $entryForm.addEventListener('submit', function (event: Event) {
     // increments the `nextEntryId` property of the data model so if another entry submitted later, it will receive diff `entryId`.
     data.entries.unshift(newObj);
     // adds the new object to the beginning of the data model's array of entries.
-    writeData();
     const renderedEntry = renderEntry(newObj);
     $entriesList.prepend(renderedEntry);
-    viewSwap('entries');
     toggleNoEntries();
     $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
     // resets the preview image's `src` attribute back to the placeholder image.
-    $entryForm.reset();
-    // resets form
   } else {
     newObj.entryId = data.editing.entryId;
     // Assign the entry id value from `data.editing` to the new object with the updated form values.
@@ -70,7 +66,6 @@ $entryForm.addEventListener('submit', function (event: Event) {
       }
     }
     // Replace the original object in the `data.entries` array for the edited entry with the new object with the edited data.
-
     const $listItemToReplace = document.querySelector(
       `li[data-entry-id="${data.editing.entryId}"]`,
     );
@@ -82,13 +77,12 @@ $entryForm.addEventListener('submit', function (event: Event) {
     const renderedEntry = renderEntry(newObj);
     $listItemToReplace.replaceWith(renderedEntry);
 
-    viewSwap('entries');
     $entryFormTitle.textContent = 'New Entry';
     data.editing = null;
-    writeData();
-    $entryForm.reset();
-    // resets form
   }
+  writeData();
+  viewSwap('entries');
+  $entryForm.reset();
 });
 
 function renderEntry(entry: Entry): HTMLElement {
@@ -227,28 +221,25 @@ if (!$entryFormTitle) throw new Error('.entry-form-title query failed!');
 
 $entriesList.addEventListener('click', function (event: Event) {
   const eventTarget = event.target as HTMLElement;
-  console.log('eventTarget:', eventTarget);
-  console.log('eventTarget.tagName:', eventTarget.tagName);
-  if (eventTarget.tagName === 'I') {
-    viewSwap('entry-form');
-    const closestListItem = eventTarget.closest('li') as HTMLElement;
-    console.log(closestListItem);
-    console.log(closestListItem.getAttribute('data-entry-id'));
-    for (let i = 0; i < data.entries.length; i++) {
-      if (
-        data.entries[i].entryId.toString() ===
-        closestListItem.getAttribute('data-entry-id')
-      ) {
-        data.editing = data.entries[i];
-      }
+  if (!(eventTarget.tagName === 'I')) {
+    return;
+  }
+  viewSwap('entry-form');
+  const closestListItem = eventTarget.closest('li') as HTMLElement;
+  for (let i = 0; i < data.entries.length; i++) {
+    if (
+      data.entries[i].entryId.toString() ===
+      closestListItem.getAttribute('data-entry-id')
+    ) {
+      data.editing = data.entries[i];
     }
-    console.log(data.editing);
-    if (data.editing) {
-      $entryFormTitle.textContent = 'Edit Entry';
-      $titleInput.value = data.editing.title;
-      $previewImg.setAttribute('src', data.editing.photoURL);
-      $urlInput.value = data.editing.photoURL;
-      $notes.value = data.editing.notes;
-    }
+  }
+
+  if (data.editing) {
+    $entryFormTitle.textContent = 'Edit Entry';
+    $titleInput.value = data.editing.title;
+    $previewImg.setAttribute('src', data.editing.photoURL);
+    $urlInput.value = data.editing.photoURL;
+    $notes.value = data.editing.notes;
   }
 });

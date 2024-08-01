@@ -70,7 +70,7 @@ $entryForm.addEventListener('submit', function (event: Event) {
     data.entries.length > 0 &&
     !$noEntriesMessage.classList.contains('hidden')
   ) {
-    $noEntriesMessage.classList.add('hidden');
+    toggleNoEntries();
   }
 
   $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
@@ -134,19 +134,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
   for (let i = 0; i < data.entries.length; i++) {
     const entry = renderEntry(data.entries[i]);
-    $entriesList.prepend(entry);
+    $entriesList.append(entry);
   }
-  if (
-    data.entries.length === 0 &&
-    $noEntriesMessage.classList.contains('hidden')
-  ) {
-    toggleNoEntries();
-  } else if (
-    data.entries.length > 0 &&
-    !$noEntriesMessage.classList.contains('hidden')
-  ) {
-    toggleNoEntries();
-  }
+
+  toggleNoEntries();
 });
 
 const $noEntriesMessage = document.querySelector(
@@ -155,10 +146,10 @@ const $noEntriesMessage = document.querySelector(
 if (!$noEntriesMessage) throw new Error('.no-entries-message query failed!');
 
 function toggleNoEntries(): void {
-  if ($noEntriesMessage.classList.contains('hidden')) {
-    $noEntriesMessage.classList.remove('hidden');
-  } else {
+  if (data.entries.length > 0) {
     $noEntriesMessage.classList.add('hidden');
+  } else {
+    $noEntriesMessage.classList.remove('hidden');
   }
 }
 
@@ -170,12 +161,12 @@ const $entriesView = document.querySelector('.entries-view') as HTMLDivElement;
 if (!$entriesView) throw new Error('entries-view query failed!');
 
 function viewSwap(viewName: string): void {
+  viewName = data.view;
   if (viewName === 'entries') {
     $entryFormView.classList.add('hidden');
     $entriesView.classList.remove('hidden');
     data.view = 'entries';
-  }
-  if (viewName === 'entry-form') {
+  } else if (viewName === 'entry-form') {
     $entriesView.classList.add('hidden');
     $entryFormView.classList.remove('hidden');
     data.view = 'entry-form';
@@ -189,19 +180,15 @@ if (!$viewSwapAnchor) throw new Error('.view-swap-anchor query failed!');
 $viewSwapAnchor.addEventListener('click', function (event: Event): void {
   event.preventDefault();
   viewSwap('entries');
-  if (
-    data.entries.length === 0 &&
-    $noEntriesMessage.classList.contains('hidden')
-  ) {
-    $noEntriesMessage.classList.remove('hidden');
-  }
+
+  toggleNoEntries();
+
   writeData();
 });
 
 const $newEntryAnchor = document.querySelector('.new-entry-anchor');
 if (!$newEntryAnchor) throw new Error('.new-entry-anchor query failed!');
-$newEntryAnchor.addEventListener('click', function (event: Event) {
-  event.preventDefault();
+$newEntryAnchor.addEventListener('click', function () {
   viewSwap('entry-form');
   writeData();
 });

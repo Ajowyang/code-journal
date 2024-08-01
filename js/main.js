@@ -49,7 +49,7 @@ $entryForm.addEventListener('submit', function (event) {
     data.entries.length > 0 &&
     !$noEntriesMessage.classList.contains('hidden')
   ) {
-    $noEntriesMessage.classList.add('hidden');
+    toggleNoEntries();
   }
   $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
   // resets the preview image's `src` attribute back to the placeholder image.
@@ -100,27 +100,17 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   for (let i = 0; i < data.entries.length; i++) {
     const entry = renderEntry(data.entries[i]);
-    $entriesList.prepend(entry);
+    $entriesList.append(entry);
   }
-  if (
-    data.entries.length === 0 &&
-    $noEntriesMessage.classList.contains('hidden')
-  ) {
-    toggleNoEntries();
-  } else if (
-    data.entries.length > 0 &&
-    !$noEntriesMessage.classList.contains('hidden')
-  ) {
-    toggleNoEntries();
-  }
+  toggleNoEntries();
 });
 const $noEntriesMessage = document.querySelector('.no-entries-message');
 if (!$noEntriesMessage) throw new Error('.no-entries-message query failed!');
 function toggleNoEntries() {
-  if ($noEntriesMessage.classList.contains('hidden')) {
-    $noEntriesMessage.classList.remove('hidden');
-  } else {
+  if (data.entries.length > 0) {
     $noEntriesMessage.classList.add('hidden');
+  } else {
+    $noEntriesMessage.classList.remove('hidden');
   }
 }
 const $entryFormView = document.querySelector('.entry-form-view');
@@ -128,12 +118,12 @@ if (!$entryFormView) throw new Error('.entry-form-view query failed!');
 const $entriesView = document.querySelector('.entries-view');
 if (!$entriesView) throw new Error('entries-view query failed!');
 function viewSwap(viewName) {
+  viewName = data.view;
   if (viewName === 'entries') {
     $entryFormView.classList.add('hidden');
     $entriesView.classList.remove('hidden');
     data.view = 'entries';
-  }
-  if (viewName === 'entry-form') {
+  } else if (viewName === 'entry-form') {
     $entriesView.classList.add('hidden');
     $entryFormView.classList.remove('hidden');
     data.view = 'entry-form';
@@ -144,18 +134,12 @@ if (!$viewSwapAnchor) throw new Error('.view-swap-anchor query failed!');
 $viewSwapAnchor.addEventListener('click', function (event) {
   event.preventDefault();
   viewSwap('entries');
-  if (
-    data.entries.length === 0 &&
-    $noEntriesMessage.classList.contains('hidden')
-  ) {
-    $noEntriesMessage.classList.remove('hidden');
-  }
+  toggleNoEntries();
   writeData();
 });
 const $newEntryAnchor = document.querySelector('.new-entry-anchor');
 if (!$newEntryAnchor) throw new Error('.new-entry-anchor query failed!');
-$newEntryAnchor.addEventListener('click', function (event) {
-  event.preventDefault();
+$newEntryAnchor.addEventListener('click', function () {
   viewSwap('entry-form');
   writeData();
 });

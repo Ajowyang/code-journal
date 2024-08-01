@@ -40,40 +40,23 @@ $entryForm.addEventListener('submit', function (event: Event) {
   // prevents the page from refreshing when the form is submitted
   const $formElements = $entryForm.elements as FormElements;
 
-  // const newObj: Entry = {
-  //   title: $titleInput.value,
-  //   photoUrl: $urlInput.value,
-  //   notes: $notes.value,
-  //   entryId: data.nextEntryId,
-  // };
-
   const newObj: Entry = {
     photoURL: $formElements.photoURL.value,
     title: $formElements.title.value,
     notes: $formElements.notes.value,
     entryId: data.nextEntryId,
   };
-
   // stores the form's input values in a new object
   // assigns an `entryId` property to the new object, taken from the `nextEntryId` property of the data model.
   data.nextEntryId++;
   // increments the `nextEntryId` property of the data model so if another entry submitted later, it will receive diff `entryId`.
   data.entries.unshift(newObj);
   // adds the new object to the beginning of the data model's array of entries.
-
   writeData();
-
   const renderedEntry = renderEntry(newObj);
   $entriesList.prepend(renderedEntry);
-
   viewSwap('entries');
-  if (
-    data.entries.length > 0 &&
-    !$noEntriesMessage.classList.contains('hidden')
-  ) {
-    toggleNoEntries();
-  }
-
+  toggleNoEntries();
   $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
   // resets the preview image's `src` attribute back to the placeholder image.
   $entryForm.reset();
@@ -162,15 +145,13 @@ const $entriesView = document.querySelector('.entries-view') as HTMLDivElement;
 if (!$entriesView) throw new Error('entries-view query failed!');
 
 function viewSwap(viewName: string): void {
-  if (viewName === 'entries' || viewName === 'entry-form') {
-    data.view = viewName;
-    if (viewName === 'entries') {
-      $entryFormView.classList.add('hidden');
-      $entriesView.classList.remove('hidden');
-    } else if (viewName === 'entry-form') {
-      $entriesView.classList.add('hidden');
-      $entryFormView.classList.remove('hidden');
-    }
+  data.view = viewName;
+  if (viewName === 'entries') {
+    $entryFormView.classList.add('hidden');
+    $entriesView.classList.remove('hidden');
+  } else if (viewName === 'entry-form') {
+    $entriesView.classList.add('hidden');
+    $entryFormView.classList.remove('hidden');
   }
 }
 

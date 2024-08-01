@@ -23,12 +23,6 @@ $entryForm.addEventListener('submit', function (event) {
   event.preventDefault();
   // prevents the page from refreshing when the form is submitted
   const $formElements = $entryForm.elements;
-  // const newObj: Entry = {
-  //   title: $titleInput.value,
-  //   photoUrl: $urlInput.value,
-  //   notes: $notes.value,
-  //   entryId: data.nextEntryId,
-  // };
   const newObj = {
     photoURL: $formElements.photoURL.value,
     title: $formElements.title.value,
@@ -45,12 +39,7 @@ $entryForm.addEventListener('submit', function (event) {
   const renderedEntry = renderEntry(newObj);
   $entriesList.prepend(renderedEntry);
   viewSwap('entries');
-  if (
-    data.entries.length > 0 &&
-    !$noEntriesMessage.classList.contains('hidden')
-  ) {
-    toggleNoEntries();
-  }
+  toggleNoEntries();
   $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
   // resets the preview image's `src` attribute back to the placeholder image.
   $entryForm.reset();
@@ -118,15 +107,13 @@ if (!$entryFormView) throw new Error('.entry-form-view query failed!');
 const $entriesView = document.querySelector('.entries-view');
 if (!$entriesView) throw new Error('entries-view query failed!');
 function viewSwap(viewName) {
-  if (viewName === 'entries' || viewName === 'entry-form') {
-    data.view = viewName;
-    if (viewName === 'entries') {
-      $entryFormView.classList.add('hidden');
-      $entriesView.classList.remove('hidden');
-    } else if (viewName === 'entry-form') {
-      $entriesView.classList.add('hidden');
-      $entryFormView.classList.remove('hidden');
-    }
+  data.view = viewName;
+  if (viewName === 'entries') {
+    $entryFormView.classList.add('hidden');
+    $entriesView.classList.remove('hidden');
+  } else if (viewName === 'entry-form') {
+    $entriesView.classList.add('hidden');
+    $entryFormView.classList.remove('hidden');
   }
 }
 const $viewSwapAnchor = document.querySelector('.view-swap-anchor');

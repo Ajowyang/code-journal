@@ -74,3 +74,31 @@ a {
   font-stretch: 100%;
   font-style: normal;
 }
+
+.modal-button {
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.delete-button {
+  color: #f81614;
+  border: none;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.dismiss-modal {
+  color: #2a2a2a;
+}
+
+.confirm-delete {
+  color: white;
+  background-color: #f81614;
+}
+
+dialog {
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+}

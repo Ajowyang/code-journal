@@ -44,14 +44,20 @@
 
             <div class="column-half flex-column">
               <label for="title">Title</label>
-              <input type="text" id="title" name="title" class="entry-input" />
+              <input
+                type="text"
+                id="title"
+                name="title"
+                class="entry-input"
+                required />
 
               <label for="photo-URL">Photo URL</label>
               <input
                 type="text"
                 id="photo-URL"
                 name="photoURL"
-                class="entry-input" />
+                class="entry-input"
+                required />
             </div>
           </div>
 
@@ -67,7 +73,10 @@
             </div>
           </div>
 
-          <div class="row justify-right">
+          <div class="row justify-space-between align-center">
+            <button type="button" class="delete-button visibility-hidden">
+              Delete Entry
+            </button>
             <button class="save-button purp-white" type="submit">SAVE</button>
           </div>
         </form>
@@ -83,7 +92,21 @@
         </div>
         <ul class="entries-list no-padding"></ul>
       </div>
+      <dialog>
+        <p class="margin-bottom-30">
+          Are you sure you want to delete this entry?
+        </p>
+        <div class="modal-actions row justify-space-between">
+          <button type="button" class="dismiss-modal modal-button">
+            CANCEL
+          </button>
+          <button type="button" class="confirm-delete modal-button">
+            CONFIRM
+          </button>
+        </div>
+      </dialog>
     </main>
+
     <script src="js/data.js"></script>
     <script src="js/main.js"></script>
   </body>

@@ -79,6 +79,7 @@ $entryForm.addEventListener('submit', function (event: Event) {
 
     $entryFormTitle.textContent = 'New Entry';
     data.editing = null;
+    $deleteButton.classList.add('visibility-hidden');
   }
   writeData();
   viewSwap('entries');
@@ -204,12 +205,14 @@ $viewSwapAnchor.addEventListener('click', function (): void {
 const $newEntryAnchor = document.querySelector('.new-entry-anchor');
 if (!$newEntryAnchor) throw new Error('.new-entry-anchor query failed!');
 $newEntryAnchor.addEventListener('click', function () {
+  $deleteButton.classList.add('visibility-hidden');
   viewSwap('entry-form');
   $entryFormTitle.textContent = 'New Entry';
   $urlInput.value = '';
   $titleInput.value = '';
   $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
   $notes.value = '';
+
   data.editing = null;
   writeData();
 });
@@ -225,6 +228,8 @@ $entriesList.addEventListener('click', function (event: Event) {
     return;
   }
   viewSwap('entry-form');
+
+  $deleteButton.classList.remove('visibility-hidden');
   const closestListItem = eventTarget.closest('li') as HTMLElement;
   for (let i = 0; i < data.entries.length; i++) {
     if (
@@ -234,6 +239,7 @@ $entriesList.addEventListener('click', function (event: Event) {
       data.editing = data.entries[i];
     }
   }
+  writeData();
 
   if (data.editing) {
     $entryFormTitle.textContent = 'Edit Entry';
@@ -241,5 +247,51 @@ $entriesList.addEventListener('click', function (event: Event) {
     $previewImg.setAttribute('src', data.editing.photoURL);
     $urlInput.value = data.editing.photoURL;
     $notes.value = data.editing.notes;
+  }
+});
+
+const $deleteButton = document.querySelector(
+  '.delete-button',
+) as HTMLButtonElement;
+if (!$deleteButton) throw new Error('.delete-button query failed!');
+const $modal = document.querySelector('dialog') as HTMLDialogElement;
+if (!$modal) throw new Error('dialog query failed!');
+const $dismissModal = document.querySelector(
+  '.dismiss-modal',
+) as HTMLButtonElement;
+if (!$dismissModal) throw new Error('.dismiss-modal query failed!');
+const $confirmDelete = document.querySelector(
+  '.confirm-delete',
+) as HTMLButtonElement;
+if (!$confirmDelete) throw new Error('.confirm-delete query failed!');
+
+$deleteButton.addEventListener('click', function () {
+  $modal.showModal();
+});
+
+$dismissModal.addEventListener('click', function () {
+  $modal.close();
+});
+
+$confirmDelete.addEventListener('click', function () {
+  if (data.editing) {
+    const $listItemToDelete = document.querySelector(
+      `li[data-entry-id="${data.editing.entryId}"]`,
+    ) as HTMLLIElement;
+
+    for (let i = 0; i < data.entries.length; i++) {
+      if (
+        $listItemToDelete.getAttribute('data-entry-id') ===
+        data.entries[i].entryId.toString()
+      ) {
+        data.entries.splice(i, 1);
+      }
+    }
+
+    $listItemToDelete.remove();
+
+    toggleNoEntries();
+    $modal.close();
+    viewSwap('entries');
   }
 });

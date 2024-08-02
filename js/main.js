@@ -60,7 +60,6 @@ $entryForm.addEventListener('submit', function (event) {
     const renderedEntry = renderEntry(newObj);
     $listItemToReplace.replaceWith(renderedEntry);
     $entryFormTitle.textContent = 'New Entry';
-    console.log('form submit!');
     data.editing = null;
     $deleteButton.classList.add('visibility-hidden');
   }
@@ -208,13 +207,10 @@ $deleteButton.addEventListener('click', function () {
   $modal.showModal();
 });
 $dismissModal.addEventListener('click', function (event) {
-  event.preventDefault();
-  console.log('CANCEL BUTTON PRESSED');
   $modal.close();
 });
 $confirmDelete.addEventListener('click', function () {
   if (data.editing) {
-    console.log('CONFIRM BUTTON PRESSED');
     const $listItemToDelete = document.querySelector(
       `li[data-entry-id="${data.editing.entryId}"]`,
     );

@@ -75,6 +75,10 @@
   margin-bottom: 15px;
 }
 
+.margin-bottom-30 {
+  margin-bottom: 30px;
+}
+
 @media screen and (width >= 768px) {
   .container {
     max-width: 900px;

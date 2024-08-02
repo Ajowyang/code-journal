@@ -78,6 +78,7 @@ $entryForm.addEventListener('submit', function (event: Event) {
     $listItemToReplace.replaceWith(renderedEntry);
 
     $entryFormTitle.textContent = 'New Entry';
+    console.log('form submit!');
     data.editing = null;
     $deleteButton.classList.add('visibility-hidden');
   }
@@ -212,6 +213,7 @@ $newEntryAnchor.addEventListener('click', function () {
   $titleInput.value = '';
   $previewImg.setAttribute('src', '../images/placeholder-image-square.jpg');
   $notes.value = '';
+
   data.editing = null;
   writeData();
 });
@@ -227,6 +229,7 @@ $entriesList.addEventListener('click', function (event: Event) {
     return;
   }
   viewSwap('entry-form');
+
   $deleteButton.classList.remove('visibility-hidden');
   const closestListItem = eventTarget.closest('li') as HTMLElement;
   for (let i = 0; i < data.entries.length; i++) {
@@ -237,6 +240,7 @@ $entriesList.addEventListener('click', function (event: Event) {
       data.editing = data.entries[i];
     }
   }
+  writeData();
 
   if (data.editing) {
     $entryFormTitle.textContent = 'Edit Entry';
@@ -251,3 +255,47 @@ const $deleteButton = document.querySelector(
   '.delete-button',
 ) as HTMLButtonElement;
 if (!$deleteButton) throw new Error('.delete-button query failed!');
+const $modal = document.querySelector('dialog') as HTMLDialogElement;
+if (!$modal) throw new Error('dialog query failed!');
+const $dismissModal = document.querySelector(
+  '.dismiss-modal',
+) as HTMLButtonElement;
+if (!$dismissModal) throw new Error('.dismiss-modal query failed!');
+const $confirmDelete = document.querySelector(
+  '.confirm-delete',
+) as HTMLButtonElement;
+if (!$confirmDelete) throw new Error('.confirm-delete query failed!');
+
+$deleteButton.addEventListener('click', function () {
+  $modal.showModal();
+});
+
+$dismissModal.addEventListener('click', function (event: Event) {
+  event.preventDefault();
+  console.log('CANCEL BUTTON PRESSED');
+  $modal.close();
+});
+
+$confirmDelete.addEventListener('click', function () {
+  if (data.editing) {
+    console.log('CONFIRM BUTTON PRESSED');
+    const $listItemToDelete = document.querySelector(
+      `li[data-entry-id="${data.editing.entryId}"]`,
+    ) as HTMLLIElement;
+
+    for (let i = 0; i < data.entries.length; i++) {
+      if (
+        $listItemToDelete.getAttribute('data-entry-id') ===
+        data.entries[i].entryId.toString()
+      ) {
+        data.entries.splice(i, 1);
+      }
+    }
+
+    $listItemToDelete.remove();
+
+    toggleNoEntries();
+    $modal.close();
+    viewSwap('entries');
+  }
+});

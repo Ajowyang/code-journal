@@ -60,6 +60,7 @@ $entryForm.addEventListener('submit', function (event) {
     const renderedEntry = renderEntry(newObj);
     $listItemToReplace.replaceWith(renderedEntry);
     $entryFormTitle.textContent = 'New Entry';
+    console.log('form submit!');
     data.editing = null;
     $deleteButton.classList.add('visibility-hidden');
   }
@@ -186,6 +187,7 @@ $entriesList.addEventListener('click', function (event) {
       data.editing = data.entries[i];
     }
   }
+  writeData();
   if (data.editing) {
     $entryFormTitle.textContent = 'Edit Entry';
     $titleInput.value = data.editing.title;
@@ -196,3 +198,37 @@ $entriesList.addEventListener('click', function (event) {
 });
 const $deleteButton = document.querySelector('.delete-button');
 if (!$deleteButton) throw new Error('.delete-button query failed!');
+const $modal = document.querySelector('dialog');
+if (!$modal) throw new Error('dialog query failed!');
+const $dismissModal = document.querySelector('.dismiss-modal');
+if (!$dismissModal) throw new Error('.dismiss-modal query failed!');
+const $confirmDelete = document.querySelector('.confirm-delete');
+if (!$confirmDelete) throw new Error('.confirm-delete query failed!');
+$deleteButton.addEventListener('click', function () {
+  $modal.showModal();
+});
+$dismissModal.addEventListener('click', function (event) {
+  event.preventDefault();
+  console.log('CANCEL BUTTON PRESSED');
+  $modal.close();
+});
+$confirmDelete.addEventListener('click', function () {
+  if (data.editing) {
+    console.log('CONFIRM BUTTON PRESSED');
+    const $listItemToDelete = document.querySelector(
+      `li[data-entry-id="${data.editing.entryId}"]`,
+    );
+    for (let i = 0; i < data.entries.length; i++) {
+      if (
+        $listItemToDelete.getAttribute('data-entry-id') ===
+        data.entries[i].entryId.toString()
+      ) {
+        data.entries.splice(i, 1);
+      }
+    }
+    $listItemToDelete.remove();
+    toggleNoEntries();
+    $modal.close();
+    viewSwap('entries');
+  }
+});
